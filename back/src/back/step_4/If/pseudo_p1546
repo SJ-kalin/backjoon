@@ -1,0 +1,36 @@
+P1546
+	int subjectNum;
+	input Array point[subjectNum];
+	int max = findMax(point);
+	fixPoint(point, max);
+	double avg = findAvg(point);
+	print avg;
+	
+	================================
+	
+findMax(Array point)
+	int temp = point[0];
+	
+	for i <- 1 to point.size();
+		if(point[i] > temp)
+			temp = point[i];
+	
+	return temp;
+	
+	================================
+	
+fixPoint(Array point, int max)
+	for i <- 0 to point.size()
+		point[i] = point[i]/max*100;
+		
+	================================
+	
+findAvg(Array point)
+	int sum;
+	for i <- 0 to point.size()
+		sum = sum + point[i];
+		
+	return sum/point.length();
+	
+
+	
