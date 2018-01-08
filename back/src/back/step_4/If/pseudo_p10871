@@ -1,0 +1,14 @@
+
+	int x;
+	int N;
+	Array a;
+	List b;
+	
+	for i <- 0 to N
+		A[i](input(num));
+	
+	for i <- 0 to N
+		if(A[i]<N)
+			b.add(A[i])
+	
+	print b
