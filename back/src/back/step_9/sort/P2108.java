@@ -34,7 +34,7 @@ public class P2108 {
 		System.out.println(avg.intValue());
 		System.out.println(arr[arr.length / 2]);
 		System.out.println(mode);
-		System.out.println(arr[arr.length-1]-arr[0]);
+		System.out.println(arr[arr.length - 1] - arr[0]);
 	}
 
 	private static double findAvg(int[] arr) {
