@@ -24,12 +24,14 @@ public class P1929 {
 		primeArr[1] = false;
 		for (int i = 2; i < max; i++) {
 			if (primeArr[i]) {
-				for (int j = 2;; j++) {
-					if (i * j > max) {
-						break;
-					} else {
-						primeArr[i * j] = false;
-					}
+				/*
+				 * for (int j = 2;; j++) { if (i * j > max) { break; } else { primeArr[i * j] =
+				 * false; } } while 로 수정
+				 */
+				int j = 2;
+				while (i * j <= max) {
+					primeArr[i * j] = false;
+					j++;
 				}
 			}
 		}
@@ -39,5 +41,7 @@ public class P1929 {
 			}
 		}
 		bw.flush();
+		bw.close();
+		br.close();
 	}
 }
