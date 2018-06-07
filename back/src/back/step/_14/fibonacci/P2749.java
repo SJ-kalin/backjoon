@@ -6,27 +6,28 @@ public class P2749 {
 	public static void main(String[] args) {
 
 		Scanner scan = new Scanner(System.in);
-		long mod = (long) (15 * Math.pow(10, 5));
-		long num = scan.nextLong();
-		System.out.println(fibo(num));
-		System.out.println(fibo(num) % 1500000);
+		int result = pisano(scan.nextInt());
+		System.out.println(result);
 	}
 
-	private static long fibo(long num) {
-		long first = 0;
-		long second = 1;
-		long result = 0;
-
-		if (num == 0 || num == 1) {
-			return num;
+	private static int pisano(int mod) {
+		int fn1 = 1;
+		int fn2 = 1;
+		int fn = fn1 + fn2;
+		int count = 2;
+		if (mod == 1 || mod == 0) {
+			return mod;
 		}
 
-		for (long i = 1; i < num; i++) {
-			result = first + second;
-			first = second;
-			second = result;
-		}
+		do {
+			fn = fn1 + fn2;
+			fn = fn % mod;
+			fn1 = fn2;
+			fn2 = fn;
+			count++;
+		} while (fn != 1 || fn2 != 1);
 
-		return result;
+		return count;
 	}
+
 }
