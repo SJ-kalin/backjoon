@@ -1,4 +1,4 @@
-package back.step._14.fibonacci;
+package back.step_14.fibonacci;
 
 import java.util.Scanner;
 
