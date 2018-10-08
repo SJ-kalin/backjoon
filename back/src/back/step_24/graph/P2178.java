@@ -4,67 +4,107 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class P2178 {
 
-	static int N;
-	static int M;
-	static int X_SIZE;
-	static int Y_SIZE;
-	static Node[][] matrix;
-	static Boolean isChecked[][];
+    static Node[][] nodeArr;
+    static boolean[][] visited;
 
-	public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String temp[] = br.readLine().split(" ");
-		N = Integer.valueOf(temp[0]);
-		M = Integer.valueOf(temp[1]);
-		matrix = new Node[N][M];
-		X_SIZE = matrix.length;
-		Y_SIZE = matrix[0].length;
-		isChecked = new Boolean[X_SIZE][Y_SIZE];
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer stringTokenizer = new StringTokenizer(br.readLine());
 
-		for (int i = 0; i < matrix.length; i++) {
-			temp = br.readLine().split("");
-			for (int j = 0; j < matrix[i].length; j++) {
-				matrix[i][j] = new Node(i, j, Integer.valueOf(temp[j]));
-			}
-		}
 
-		bfs();
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix[i].length; j++) {
-				System.out.print(matrix[i][j].value);
-			}
-			System.out.println();
-		}
-	}
+        int count = Integer.parseInt(br.readLine());
 
-	private static void bfs() {
+        int row = Integer.parseInt(stringTokenizer.nextToken());
+        int col = Integer.parseInt(stringTokenizer.nextToken());
 
-		Queue<Node> queue = new LinkedList();
-		queue.add(matrix[0][0]);
-		while (!queue.isEmpty()) {
-			Node temp = queue.poll();
-			if (temp.x + 1 < X_SIZE && temp.value != 0) {
-			}
-		}
+        nodeArr = new Node[row][col];
+        visited = new boolean[row][col];
 
-	}
+        for (int i = 0; i < row; i++) {
+            String temp[] = br.readLine().split("");
+            for (int j = 0; j < temp.length; j++) {
+                nodeArr[i][j] = new Node(i, j, temp[j]);
+//                System.out.print(nodeArr[i][j].x + "," + nodeArr[i][j].y + "\t");
+            }
+//            System.out.println();
+        }
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(nodeArr[0][0]);
+        visited[0][0] = true;
+        first:
+        while (!queue.isEmpty()) {
+            Queue<Node> secondQueue = new LinkedList<>();
+            while (!queue.isEmpty()) {
+                Node temp = queue.poll();
+                secondQueue.add(temp);
+            }
+//            System.out.println("=====================");
+            while (!secondQueue.isEmpty()) {
+                Node temp = secondQueue.poll();
+//                System.out.println(temp.toString());
+                if (temp.x == row - 1 && temp.y == col - 1) {
+                    count++;
+                    break first;
+                }
+
+                if (temp.y < col - 1) {
+                    if (nodeArr[temp.x][temp.y + 1].value.equals("1") && !visited[temp.x][temp.y + 1]) {
+                        queue.add(nodeArr[temp.x][temp.y + 1]);
+                        visited[temp.x][temp.y + 1] = true;
+                    }
+                }
+
+
+                if (temp.y > 0) {
+                    if (nodeArr[temp.x][temp.y - 1].value.equals("1") && !visited[temp.x][temp.y - 1]) {
+                        queue.add(nodeArr[temp.x][temp.y - 1]);
+                        visited[temp.x][temp.y - 1] = true;
+                    }
+                }
+
+
+                if (temp.x < row - 1) {
+                    if (nodeArr[temp.x + 1][temp.y].value.equals("1") && !visited[temp.x + 1][temp.y]) {
+                        queue.add(nodeArr[temp.x + 1][temp.y]);
+                        visited[temp.x + 1][temp.y] = true;
+                    }
+                }
+
+
+                if (temp.x > 0) {
+                    if (nodeArr[temp.x - 1][temp.y].value.equals("1") && !visited[temp.x - 1][temp.y]) {
+                        queue.add(nodeArr[temp.x - 1][temp.y]);
+                        visited[temp.x - 1][temp.y] = true;
+                    }
+                }
+
+
+            }
+            count++;
+        }
+        System.out.println(count);
+    }
 }
 
 class Node {
-	public Node(int x, int y, int value) {
-		this.x = x;
-		this.y = y;
-		this.value = value;
-	}
+    public Node(int x, int y, String value) {
+        this.x = x;
+        this.y = y;
+        this.value = value;
+    }
 
-	int x;
-	int y;
-	int value;
+    int x;
+    int y;
+    String value;
+
+    @Override
+    public String toString() {
+        return x + "," + y;
+    }
 }
