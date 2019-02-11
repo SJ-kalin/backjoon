@@ -6,50 +6,68 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class P1966 {
-
-    static int arr[];
-
     public static void main(String[] args) throws IOException {
-
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int count = Integer.parseInt(br.readLine());
         while (count-- > 0) {
-
-            StringTokenizer token = new StringTokenizer(br.readLine());
-            int arrSize = Integer.parseInt(token.nextToken());
-            int target = Integer.parseInt(token.nextToken());
-
-            arr = new int[arrSize + 1];
-
-            String arrTemp[] = br.readLine().split(" ");
-            for (int i = 1; i < arr.length; i++) {
-                insert(i, Integer.parseInt(arrTemp[i - 1]));
+            StringTokenizer tokenizer = new StringTokenizer(br.readLine());
+            int numOfDocu = Integer.parseInt(tokenizer.nextToken());
+            int targetDocuIndex = Integer.parseInt(tokenizer.nextToken());
+            StringTokenizer docuList = new StringTokenizer(br.readLine());
+            Queue<Node> q = new LinkedList<>();
+            for (int i = 0; i < numOfDocu; i++) {
+                Node temp = new Node(Integer.parseInt(docuList.nextToken()));
+                if (i == targetDocuIndex) {
+                    temp.targetDocu = true;
+                }
+                q.offer(temp);
             }
+//
 
-
-
-        }
-
+            int printCount = 0;
+            while (!q.isEmpty()) {
+                Node seletedNode = q.poll();
+                Queue tempQueue = (Queue) ((LinkedList<Node>) q).clone();
+                if (isMostHighRank(seletedNode, tempQueue)) {
+                    printCount++;
+                    if (seletedNode.targetDocu) {
+                        break;
+                    }
+                } else {
+                    q.offer(seletedNode);
+                }
+            }
+            System.out.println(printCount);
+        }//-while
     }
 
-    private static void insert(int i, int parseInt) {
-
-        if (i == 1) {
-            arr[i] = parseInt;
-            return;
+    private static void printQ(Queue<Node> q) {
+        while (!q.isEmpty()) {
+            System.out.print(q.poll().priority + "\t");
         }
+    }
 
-        if (arr[i / 2] < parseInt) {
-            int temp = arr[i / 2];
-            arr[i / 2] = parseInt;
-            arr[i] = temp;
-            insert(i / 2, parseInt);
-        } else {
-            arr[i] = parseInt;
-            return;
+    private static boolean isMostHighRank(Node seletedNode, Queue<Node> q) {
+        boolean isHigh = true;
+        while (!q.isEmpty()) {
+            Node temp = q.poll();
+            if (seletedNode.priority < temp.priority) {
+                isHigh = false;
+                break;
+            }
         }
+        return isHigh;
+    }
 
 
+}
+
+class Node {
+    int priority;
+    boolean targetDocu;
+
+    Node(int priority) {
+        this.priority = priority;
     }
 }
