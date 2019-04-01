@@ -8,88 +8,96 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 public class P1991 {
-	public static void main(String[] args) throws NumberFormatException, IOException {
+    public static void main(String[] args) throws NumberFormatException, IOException {
 
-		int count = 0;
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		count = Integer.parseInt(br.readLine());
-		Map<Character, Node> map = new HashMap<>();
-		Tree tree = new Tree();
-		Node root = null;
-		while (count-- > 0) {
-			StringTokenizer token = new StringTokenizer(br.readLine());
-			char parent = token.nextToken().charAt(0);
-			char leftChild = token.nextToken().charAt(0);
-			char rightChild = token.nextToken().charAt(0);
-			if (!map.containsKey(parent)) {
-				Node node = new Node(parent);
-				node.left = new Node(leftChild);
-				node.right = new Node(rightChild);
-				map.put(parent, node);
-				map.put(leftChild, node.left);
-				map.put(rightChild, node.right);
-			} else {
-				for (Character key : map.keySet()) {
-					if (map.get(key).value == parent) {
-						map.get(key).left = new Node(leftChild);
-						map.get(key).right = new Node(rightChild);
-						map.put(leftChild, map.get(key).left);
-						map.put(rightChild, map.get(key).right);
-						break;
-					}
-				}
-			}
+        int count = 0;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        count = Integer.parseInt(br.readLine());
+        Map<Character, Node> map = new HashMap<>();
+        Tree tree = new Tree();
 
-		} // while Á¾·á
-		root = map.get('A');
+        while (count-- > 0) {
+            StringTokenizer token = new StringTokenizer(br.readLine());
 
-		tree.preOrder(root);
-		System.out.println();
-		tree.inOrder(root);
-		System.out.println();
-		tree.postOrder(root);
-		br.close();
-	}
+            char parentNodeValue = token.nextToken().charAt(0);
+            char leftChildNodeValue = token.nextToken().charAt(0);
+            char rightChildValue = token.nextToken().charAt(0);
+
+            if (!map.containsKey(parentNodeValue)) {
+                Node node = new Node(parentNodeValue);
+                node.left = new Node(leftChildNodeValue);
+                node.right = new Node(rightChildValue);
+
+                map.put(parentNodeValue, node);
+                map.put(leftChildNodeValue, node.left);
+                map.put(rightChildValue, node.right);
+
+            } else {
+                for (Character key : map.keySet()) {
+                    if (map.get(key).value == parentNodeValue) {
+                        map.get(key).left = new Node(leftChildNodeValue);
+                        map.get(key).right = new Node(rightChildValue);
+                        map.put(leftChildNodeValue, map.get(key).left);
+                        map.put(rightChildValue, map.get(key).right);
+                        break;
+                    }
+                }
+            }
+        }
+        try {
+            Node root = map.get('A');
+            tree.preOrder(root);
+            System.out.println();
+            tree.inOrder(root);
+            System.out.println();
+            tree.postOrder(root);
+        } catch (Exception e) {
+            System.out.println("A is not defined");
+        } finally {
+            br.close();
+        }
+    }
 }
 
 class Node {
-	Node left;
-	Node right;
-	char value;
+    Node left;
+    Node right;
+    char value;
 
-	Node(char value) {
-		this.value = value;
-	}
+    Node(char value) {
+        this.value = value;
+    }
 }
 
 class Tree {
 
-	public void preOrder(Node node) {
-		if (node == null || node.value == '.') {
-			return;
-		}
-		System.out.print(node.value);
-		preOrder(node.left);
-		preOrder(node.right);
-	}
+    public void preOrder(Node parentNode) {
 
-	public void postOrder(Node node) {
-		if (node == null || node.value == '.') {
-			return;
-		}
-		postOrder(node.left);
-		postOrder(node.right);
-		System.out.print(node.value);
-	}
+        if (parentNode == null || parentNode.value == '.') {
+            return;
+        }
+        System.out.print(parentNode.value);
+        preOrder(parentNode.left);
+        preOrder(parentNode.right);
+    }
 
-	public void inOrder(Node node) {
-		if (node == null || node.value == '.') {
-			return;
-		}
+    public void postOrder(Node parentNode) {
+        if (parentNode == null || parentNode.value == '.') {
+            return;
+        }
+        postOrder(parentNode.left);
+        postOrder(parentNode.right);
+        System.out.print(parentNode.value);
+    }
 
-		inOrder(node.left);
-		System.out.print(node.value);
-		inOrder(node.right);
+    public void inOrder(Node parentNode) {
+        if (parentNode == null || parentNode.value == '.') {
+            return;
+        }
 
-	}
+        inOrder(parentNode.left);
+        System.out.print(parentNode.value);
+        inOrder(parentNode.right);
+
+    }
 }
